@@ -1,0 +1,33 @@
+{
+  "total": 1860,
+  "by_task": {
+    "best_response": 900,
+    "nash_equilibrium": 960
+  },
+  "by_tier": {
+    "easy": 350,
+    "medium": 600,
+    "hard": 570,
+    "expert": 340
+  },
+  "br": {
+    "n": 900,
+    "unique_frac": 1.0,
+    "mean_eu_gap": 1.495,
+    "mode_shortcut_hit": 0.406,
+    "gmax_shortcut_hit": 0.314,
+    "adversarial_met_frac": 1.0,
+    "mean_opp_entropy": 0.82
+  },
+  "nash": {
+    "n": 960,
+    "class_dist": {
+      "pure": 304,
+      "mixed": 508,
+      "both": 148
+    },
+    "mixed_required_frac": 0.529,
+    "mean_n_equilibria": 1.525,
+    "mean_dominated": 1.185
+  }
+}

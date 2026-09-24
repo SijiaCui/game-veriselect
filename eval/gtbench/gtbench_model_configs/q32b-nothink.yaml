@@ -1,0 +1,6 @@
+llm_model_path: local/q32b:nothink
+max_tokens: 1024
+timeout: 180
+temperature: 0.7
+model_type: LLMModel
+nick_name: q32b-nothink

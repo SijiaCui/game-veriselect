@@ -1,0 +1,42 @@
+# --- Python / build ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+build/
+dist/
+.eggs/
+.venv/
+venv/
+.coverage
+.hypothesis/
+.ipynb_checkpoints
+.python-version
+
+# --- Editor / OS ---
+.vscode
+.idea/
+.history
+.DS_Store
+*.swp
+*~
+
+# --- Agent tooling ---
+.agents
+.claude
+
+# --- Model weights & large artifacts (kept on disk only, never committed) ---
+Qwen/
+models/
+results/
+outputs/
+**/checkpoints
+**/*.ckpt
+**/*.pt
+*.safetensors
+*.lock
+**/wandb
+logs/
+**/raw/*.jsonl

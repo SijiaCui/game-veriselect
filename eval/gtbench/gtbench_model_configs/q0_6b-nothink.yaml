@@ -1,0 +1,6 @@
+llm_model_path: local/q0_6b:nothink
+max_tokens: 1024
+timeout: 180
+temperature: 0.7
+model_type: LLMModel
+nick_name: q0_6b-nothink

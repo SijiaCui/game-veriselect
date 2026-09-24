@@ -1,0 +1,6 @@
+llm_model_path: local/q4b:think
+max_tokens: 8192
+timeout: 600
+temperature: 0.6
+model_type: LLMModel
+nick_name: q4b-think

@@ -1,0 +1,29 @@
+{
+  "total": 220,
+  "by_task": {
+    "best_response": 110,
+    "nash_equilibrium": 110
+  },
+  "by_tier": {
+    "hard": 140,
+    "expert": 80
+  },
+  "br": {
+    "n": 110,
+    "unique_frac": 1.0,
+    "mean_eu_gap": 0.73,
+    "mode_shortcut_hit": 0.0,
+    "gmax_shortcut_hit": 0.0,
+    "adversarial_met_frac": 1.0,
+    "mean_opp_entropy": 0.952
+  },
+  "nash": {
+    "n": 110,
+    "class_dist": {
+      "mixed": 110
+    },
+    "mixed_required_frac": 1.0,
+    "mean_n_equilibria": 1.073,
+    "mean_dominated": 1.8
+  }
+}
