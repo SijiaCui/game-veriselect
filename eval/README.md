@@ -24,7 +24,7 @@ Interpreter defaults to `python3`; override with `PY=/path/to/python` if needed.
 ## Reproduce — GTBench (Qwen3 size scaling)
 
 ```bash
-bash eval/setup.sh                 # GTBench deps + apply patch/configs
+bash eval/gtbench/setup.sh         # GTBench deps + apply patch/configs
 bash eval/serve.sh                 # 6 vLLM servers, ports 8001-8006
 bash eval/run_all.sh --smoke       # quick end-to-end sanity (2 models, 1 game, 2 eps)
 bash eval/run_all.sh               # full matrix: 6 models x {think,nothink} on GTBench
@@ -51,7 +51,6 @@ python3 eval/analyze_eval.py                  # aggregate
 
 ```
 eval/
-├── setup.sh                 GTBench deps + patch/config install
 ├── serve.sh                 co-located vLLM servers; records PIDs to logs/server_pids.txt
 ├── serve_one.sh             one model, tensor-parallel across both cards (per-model pattern)
 ├── stop.sh                  precise teardown of this session's servers (by PID, no broad pkill)
@@ -59,6 +58,7 @@ eval/
 ├── analyze_eval.py          aggregate GTBench -> results/REPORT.md, summary.json
 ├── README.md
 ├── gtbench/                 GTBench track: runners, analyzers, patch + model configs
+│                            (setup.sh here applies the patch/configs)
 ├── gamesolve/               in-house GameSolve-Hard eval: eval_core.py (shared engine),
 │                            eval_qwen25.py / eval_qwen3.py (per-series entries),
 │                            eval_think_diag.py, judge_reward.py, run_*.sh

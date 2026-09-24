@@ -15,18 +15,18 @@ The 7 games: `tictactoe connect4 kuhn_poker nim prisoners_dilemma liars_dice fir
 ## 0. One-time setup
 
 GTBench is vendored as plain source under `bench/GTBench`, patched to talk to local vLLM. Run
-**from the repo root** (`eval/setup.sh`), which:
+**from anywhere** (`eval/gtbench/setup.sh` resolves its own paths), which:
 1. installs GTBench's real deps (`open_spiel==1.4`, `ml_collections`, `jsonlines`,
    `gymnasium`, `python-box`, `retrying`, … — **not** its pinned `openai`/`langchain`),
 2. overwrites `bench/GTBench/gamingbench/chat/chat.py` with our [`gtbench_patch/chat.py`](gtbench_patch/chat.py)
    (modern OpenAI client → local vLLM endpoint),
-3. copies [`gtbench_model_configs/*.yaml`](gtbench_model_configs) into the submodule's `model_configs/`.
+3. copies [`gtbench_model_configs/*.yaml`](gtbench_model_configs) into `bench/GTBench/gamingbench/configs/model_configs/`.
 
 Steps 2–3 are the part that matters on a fresh checkout; the script also verifies the patched
 backend imports. Re-run it after pulling a new GTBench.
 
 ```bash
-bash eval/setup.sh          # idempotent
+bash eval/gtbench/setup.sh          # idempotent
 ```
 
 **Model weights.** Every runner here needs `MODEL_ROOT` pointing at the directory holding the
@@ -84,8 +84,8 @@ Track B is the paper's contribution; track A is the base-capability context.
 
 | path | role |
 |---|---|
-| `gtbench_patch/chat.py` | The **only** file we override in the GTBench submodule: routes its LLM calls to local vLLM via the modern OpenAI client. Applied by `eval/setup.sh`. |
-| `gtbench_model_configs/*.yaml` | Qwen3 served-name → `local/<name>:think\|:nothink` model configs (+ `dummy-random.yaml` opponent). Copied into the submodule by `eval/setup.sh`. |
+| `gtbench_patch/chat.py` | The **only** file we override in the vendored GTBench tree: routes its LLM calls to local vLLM via the modern OpenAI client. Applied by `eval/gtbench/setup.sh`. |
+| `gtbench_model_configs/*.yaml` | Qwen3 served-name → `local/<name>:think\|:nothink` model configs (+ `dummy-random.yaml` opponent). Copied into the vendored tree by `eval/gtbench/setup.sh`. |
 
 ---
 
@@ -93,7 +93,7 @@ Track B is the paper's contribution; track A is the base-capability context.
 
 ```bash
 # 0. one-time
-bash eval/setup.sh
+bash eval/gtbench/setup.sh
 
 # 1. generate the frozen offline n=8 data (Qwen2.5-7B CoT, all 7 games)   [~1 GPU, minutes]
 bash eval/gtbench/run_veriselect_datagen_q25_7b.sh          # -> results/gtbench_veriselect/q25_7b-cot-n8/
