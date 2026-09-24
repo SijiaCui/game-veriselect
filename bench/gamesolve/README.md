@@ -130,7 +130,7 @@ lives in BR (all tiers, non-thinking) and NE-medium/hard/expert (thinking); OOD 
    canonical anchors (VeriSelect@16 ID 0.741, …) do not transfer.
 
 2. **The process verifier needs a mixed-NE checker before the hard Nash tier is usable
-   as a VeriSelect selection signal.** `../verifier/gt_prm_verifier.py` extracts only
+   as a VeriSelect selection signal.** `veriselect/gt_prm_verifier.py` extracts only
    *pure*-NE pairs and dominance claims — it has no mixed-NE verification. On the new
    hard/expert Nash tiers (100% mixed-required) a correct gold trace therefore scores
    `process_score ≈ 0`. BR is unaffected (gold BR → `process_score = 1.0`). Extending the

@@ -14,17 +14,26 @@ The 7 games: `tictactoe connect4 kuhn_poker nim prisoners_dilemma liars_dice fir
 
 ## 0. One-time setup
 
-GTBench is a git submodule under `bench/GTBench`, patched to talk to local vLLM. Run **from the
-repo root** (`eval/setup.sh`), which:
-1. adds/inits the `bench/GTBench` submodule,
-2. `pip install`s GTBench's real deps (`open_spiel==1.4`, `ml_collections`, `jsonlines`,
+GTBench is vendored as plain source under `bench/GTBench`, patched to talk to local vLLM. Run
+**from the repo root** (`eval/setup.sh`), which:
+1. installs GTBench's real deps (`open_spiel==1.4`, `ml_collections`, `jsonlines`,
    `gymnasium`, `python-box`, `retrying`, … — **not** its pinned `openai`/`langchain`),
-3. overwrites `bench/GTBench/gamingbench/chat/chat.py` with our [`gtbench_patch/chat.py`](gtbench_patch/chat.py)
+2. overwrites `bench/GTBench/gamingbench/chat/chat.py` with our [`gtbench_patch/chat.py`](gtbench_patch/chat.py)
    (modern OpenAI client → local vLLM endpoint),
-4. copies [`gtbench_model_configs/*.yaml`](gtbench_model_configs) into the submodule's `model_configs/`.
+3. copies [`gtbench_model_configs/*.yaml`](gtbench_model_configs) into the submodule's `model_configs/`.
+
+Steps 2–3 are the part that matters on a fresh checkout; the script also verifies the patched
+backend imports. Re-run it after pulling a new GTBench.
 
 ```bash
-bash eval/setup.sh          # idempotent; re-run after pulling GTBench
+bash eval/setup.sh          # idempotent
+```
+
+**Model weights.** Every runner here needs `MODEL_ROOT` pointing at the directory holding the
+model directories (e.g. `Qwen2.5-7B-Instruct`):
+
+```bash
+export MODEL_ROOT=/path/to/models
 ```
 
 **Model routing.** Model path convention `local/<served>:think|:nothink` routes through the
@@ -101,7 +110,7 @@ python3 eval/gtbench/analyze_veriselect_gtbench.py          # judge@8 column now
 # 4. the ONLINE 100-match win-rate table (the headline)     [all 4 GPUs, gated]
 RESDIR=online100_fixed bash eval/gtbench/run_veriselect_online100.sh
 
-# 5. figures + tidy data
+# 5. figures + tidy data   [not in this repo — see "Downstream analysis" below]
 python3 analysis/gtbench_veriselect/build.py                # -> data_offline.csv / data.json / …
 python3 analysis/gtbench_veriselect/plot_paper.py           # -> fig_*.{pdf,png}
 ```
@@ -121,11 +130,11 @@ Common env overrides on the runners: `N` (candidates/generations, default 8),
 - **veriselect scaling across Qwen2.5 sizes**: `run_gtbench_scaling_q25.sh` + `summarize_scaling_q25.py`.
 - **Base-capability win-rate scaling**: `run_gtbench*.sh` + `analyze_gtbench_qwen25.py`.
 
-**Downstream analysis / figures** live in
-[`analysis/gtbench_veriselect/`](../../analysis/gtbench_veriselect) (headline 7B experiment) and
-[`analysis/gtbench_veriselect_models/`](../../analysis/gtbench_veriselect_models) (cross-size
-scaling) — their `build.py` reads the `results/gtbench_veriselect/` dirs; `plot_paper.py` renders
-the figures. The gold-free verifier itself is `veriselect/gtbench_gold_free_verifier.py`.
+**Downstream analysis / figures are NOT in this repository.** They live in the sibling
+`analysis/gtbench_veriselect/` (headline 7B experiment) and `analysis/gtbench_veriselect_models/`
+(cross-size scaling) trees of the private research checkout — their `build.py` reads the
+`results/gtbench_veriselect/` dirs produced by the runners above, and `plot_paper.py` renders the
+figures. The gold-free verifier itself **is** here: `veriselect/gtbench_gold_free_verifier.py`.
 
 ---
 

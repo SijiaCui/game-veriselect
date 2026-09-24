@@ -14,8 +14,10 @@ and *helps*.
 
 | file | what |
 |---|---|
-| `gt_prm_verifier.py` | the sound process verifier (migrated verbatim). Extracts formally-verifiable claims (`DOMINANCE` / `EQUILIBRIUM` / `BR_ACTION` / `EXP_PAYOFF`) from a free-form trace and checks each against the payoff matrices + solver ground truth. `verify_trace(response, game) -> {process_score, gold_free_score, accuracy, coverage, ...}`. Deps: `re`, `numpy`. |
-| `veriselect.py` | the selector: `score_traces(traces, game, signal)` and `select(traces, game, rng, signal)` = argmax verifier score, random tie-break (mirrors the project's `analyze.py`). `__main__` runs a Prisoner's-Dilemma self-check. |
+| `gt_prm_verifier.py` | the sound process verifier (GameSolve). Extracts formally-verifiable claims (`DOMINANCE` / `EQUILIBRIUM` / `BR_ACTION` / `EXP_PAYOFF`) from a free-form trace and checks each against the payoff matrices + solver ground truth. `verify_trace(response, game) -> {process_score, gold_free_score, accuracy, coverage, ...}`. Deps: `re`, `numpy`. |
+| `gold_free_verifier.py` | the gold-free variant of the above: `verify_trace_gold_free(response, game)`. Scores claims without consulting the answer key. |
+| `gtbench_gold_free_verifier.py` | the GTBench counterpart: `verify_trace_gtbench(response, observation)`. For interactive games, where the reference is the observation rather than a payoff matrix. |
+| `veriselect.py` | the selector: `score_traces(traces, game, signal)` and `select(traces, game, rng, signal)` = argmax verifier score, random tie-break. `__main__` runs a Prisoner's-Dilemma self-check. |
 
 `game` is a dict with `payoff_matrix_row`, `payoff_matrix_col`, `row_labels`,
 `col_labels`, `task`, `ground_truth` — exactly the fields carried by each
@@ -30,8 +32,10 @@ and *helps*.
 
 ## Verify
 
+Run from the repository root:
+
 ```bash
-python3 veriselect/veriselect/veriselect.py   # -> "veriselect selfcheck OK"
+python3 veriselect/veriselect.py   # -> "veriselect selfcheck OK"
 ```
 
 ## Not in this migration (eval integration, done separately)
@@ -40,5 +44,6 @@ python3 veriselect/veriselect/veriselect.py   # -> "veriselect selfcheck OK"
   runner (which holds the game) computes a per-candidate verifier score, then VeriSelect
   selects argmax over it — structurally identical to `oracle`, just fed the verifier
   score instead of `exact_match`. Needs a `verifier_score` field on `Candidate`.
+  (`baselines/` is not part of this repository.)
 - The N-trace generation + bootstrap-curve analysis harness (BETA `generate.py` /
   `analyze.py`): the eval side, not the method engine.
